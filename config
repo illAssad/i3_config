@@ -239,7 +239,9 @@ exec_always setxkbmap -option caps:super
 bindsym Print exec "flameshot gui"
 
 # Lock screen with Windows+L
-bindsym $alt+$mod+l exec i3lock -i ~/Pictures/wallpaperflare.com_wallpaper.png --nofork
+
+bindsym $alt+$mod+l exec /home/greentea/.config/rofi/powermenu/type-1/powermenu.sh
+# i3lock -i ~/Pictures/wallpaperflare.com_wallpaper.png --nofork
 
 # Custom keybindings for workspaces
 bindsym $mod+b workspace $ws9 
