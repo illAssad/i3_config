@@ -3,13 +3,13 @@
 set $mod Mod4
 set $alt Mod1
 # Monitor assignments
-set $left_monitor DP-2.1.1.8
-set $right_monitor DP-2.1.8
-set $top_monitor DP-2.8
-set $middle_monitor DP-0.8
+set $left_monitor DP-0.8
+set $right_monitor HDMI-0 
+set $top_monitor DP-4
+set $middle_monitor DP-2.8
 
-# Font for window titles
-font pango:monospace 8
+# Font for window titles - UPDATED with smaller size
+font pango:monospace 7
 
 # Start XDG autostart .desktop files using dex
 exec --no-startup-id dex --autostart --environment i3
@@ -104,7 +104,7 @@ set $ws9 "9:Browsers"
 set $wsBp "12:Browsers2"
 set $ws10 "10:Comms"
 set $ws11 "11:Notes"
-
+set $wsDiscord "13:Discord"
 # Switch to workspace
 
 bindsym $mod+1 workspace number $ws1
@@ -118,6 +118,7 @@ bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 bindsym $mod+minus workspace number $ws11
+bindsym $mod+d workspace number $wsDiscord
 
 # Move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -131,7 +132,7 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Shift+minus move container to workspace number $ws11
-
+bindsym $mod+Shift+d move container to workspace number $wsDiscord
 # Reload the configuration file
 bindsym $mod+Shift+c reload
 
@@ -163,14 +164,24 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar
+# Start i3bar to display a workspace bar - ONLY on horizontal monitors
 bar {
         status_command i3status
         position bottom
-        workspace_min_width 34
-        padding 2px 8px 2px 8px
+        workspace_min_width 25
+        padding 1px 4px 1px 4px
         strip_workspace_numbers yes
-
+        
+        # Smaller font size for the bar
+        font pango:monospace 7
+        
+        # Reduced height
+        height 20
+        
+        # Only show on horizontal monitors
+        output $top_monitor
+        output $middle_monitor
+        
         colors {
                 background #141c21
                 statusline #141c21
@@ -206,16 +217,19 @@ workspace $ws3 output $middle_monitor
 workspace $ws4 output $middle_monitor
 workspace $ws5 output $middle_monitor
 workspace $ws6 output $middle_monitor
-workspace $ws7 output $middle_monitor
-workspace $ws8 output $middle_monitor
+workspace $ws7 output $top_monitor
+workspace $ws8 output $top_monitor
 workspace $ws9 output $left_monitor
 workspace $ws10 output $top_monitor
 workspace $ws11 output $right_monitor
 workspace $wsBp output $left_monitor
+workspace $wsDiscord output $top_monitor
 
 # Assign applications to specific workspaces
 assign [class="Brave-browser|Firefox|Chromium"] $ws9
-assign [class="discord|TelegramDesktop"] $ws10
+assign [class="TelegramDesktop"] $ws10
+assign [class="discord"] $wsDiscord
+assign [class="TelegramDesktop"] $ws10
 assign [class="Obsidian"] $ws11
 assign [class="Spotify"] $ws11
 
@@ -229,6 +243,7 @@ for_window [class="Spotify"] move to workspace $ws11, move down
 
 # Startup applications
 exec --no-startup-id ~/.screenlayout/default.sh
+#exec --no-startup-id /root/.screenlayout/default.sh
 exec --no-startup-id discord
 exec --no-startup-id telegram-desktop
 exec --no-startup-id obsidian
@@ -240,7 +255,6 @@ exec_always setxkbmap -option caps:super
 bindsym Print exec "flameshot gui"
 
 # Lock screen with Windows+L
-
 bindsym $alt+$mod+l exec /home/greentea/.config/rofi/powermenu/type-1/powermenu.sh
 # i3lock -i ~/Pictures/wallpaperflare.com_wallpaper.png --nofork
 
